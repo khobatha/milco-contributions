@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MiLCo – Contribution Lookup</title>
+
+  <style>
+    /* MiLCo brand palette (from logo) */
+    :root{
+      --milco-red:#d60000;
+      --milco-red-dark:#b30000;
+      --milco-charcoal:#3b3b3b;
+      --milco-green:#2e8b57;
+
+      --bg:#f7f7fb;
+      --card:#ffffff;
+      --text:#1f2430;
+      --muted:#5a6476;
+      --line:#e6e8ef;
+
+      --shadow: 0 10px 30px rgba(18, 24, 40, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Top brand bar */
+    .topbar{
+      background: linear-gradient(90deg, var(--milco-red) 0%, var(--milco-red-dark) 55%, var(--milco-charcoal) 100%);
+      height: 6px;
+      width: 100%;
+    }
+
+    header{
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner{
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 260px;
+    }
+
+    .brand img{
+      width:52px;
+      height:52px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background:#fff;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:0.2px;
+      color: var(--milco-charcoal);
+      line-height: 1.1;
+    }
+
+    .brand .sub{
+      margin-top:4px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background:#fff;
+      color: var(--muted);
+      font-size: 12px;
+      white-space:nowrap;
+    }
+
+    .tag-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background: var(--milco-green);
+      box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.15);
+    }
+
+    main{
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 18px 20px 28px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .title{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 10px;
+      flex-wrap:wrap;
+    }
+
+    .title h2{
+      margin:0;
+      font-size: 16px;
+      color: var(--milco-charcoal);
+    }
+
+    .title p{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 680px;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .pill{
+      display:inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    input{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      outline:none;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+
+    input:focus{
+      border-color: rgba(214, 0, 0, 0.5);
+      box-shadow: 0 0 0 4px rgba(214, 0, 0, 0.12);
+    }
+
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      margin-top: 14px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    button{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      cursor:pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform 0.06s, filter 0.15s, box-shadow 0.15s;
+    }
+
+    button:active{ transform: translateY(1px); }
+
+    .btn-primary{
+      background: var(--milco-red);
+      color:#fff;
+      box-shadow: 0 8px 18px rgba(214,0,0,0.18);
+    }
+    .btn-primary:hover{ filter: brightness(1.05); }
+
+    .btn-secondary{
+      background: #fff;
+      border-color: var(--line);
+      color: var(--milco-charcoal);
+    }
+    .btn-secondary:hover{ filter: brightness(0.98); }
+
+    .btn-export{
+      background: #fff;
+      border-color: rgba(46, 139, 87, 0.35);
+      color: var(--milco-green);
+    }
+    .btn-export:hover{ filter: brightness(0.98); }
+    .btn-export:disabled{
+      opacity:0.45;
+      cursor:not-allowed;
+      border-color: var(--line);
+      color: var(--muted);
+    }
+
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .status-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background: var(--milco-red);
+      box-shadow: 0 0 0 3px rgba(214,0,0,0.12);
+    }
+
+    .error{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(214,0,0,0.25);
+      background: rgba(214,0,0,0.06);
+      color: #8a0b0b;
+      display:none;
+      font-size: 13px;
+    }
+
+    .success{
+      margin-top: 12px;
+      display:none;
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .kpi{
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .kpi-title{
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .kpi-value{
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--milco-charcoal);
+    }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      overflow:hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+    }
+
+    thead th{
+      background: #fbfbfe;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12.5px;
+      text-align:left;
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    tbody td{
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+    tbody tr:last-child td{ border-bottom:none; }
+
+    footer{
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 14px 2px 0;
+    }
+
+    .privacy{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(59,59,59,0.25);
+      background: rgba(59,59,59,0.03);
+      margin-top: 12px;
+    }
+    .privacy b{ color: var(--milco-charcoal); }
+
+    @media (max-width: 860px){
+      .row{ grid-template-columns: 1fr; }
+      .kpis{ grid-template-columns: 1fr; }
+      .header-inner{ align-items:flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar"></div>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <img src="./assets/img/milco.jpeg" alt="MiLCo Logo" />
+        <div>
+          <h1>MiLCo Contribution Lookup</h1>
+          <div class="sub">Check your contributions by Member Code (recommended) or Full Name.</div>
+        </div>
+      </div>
+      <div class="tag">
+        <span class="tag-dot"></span>
+        Exact-match lookup • No member listing
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="title">
+        <div>
+          <h2>Find your contribution record</h2>
+          <p>
+            Enter your <b>Member Code</b> (recommended) or your <b>Full Name</b> (exact, case-insensitive).
+            If you cannot find your record, please contact the MiLCo Management Committee.
+          </p>
+        </div>
+        <span class="pill" id="dataStatus">Loading data…</span>
+      </div>
+
+      <div class="row">
+        <div>
+          <label><span class="pill">Member Code</span></label>
+          <input id="inpCode" placeholder="e.g., M120" autocomplete="off" />
+          <div class="hint">Tip: Use your member code for the most reliable match.</div>
+        </div>
+        <div>
+          <label><span class="pill">Full Name (exact)</span></label>
+          <input id="inpName" placeholder="e.g., Thabo Mokoena" autocomplete="off" />
+          <div class="hint">Must match the name in our records (case-insensitive). No partial matches.</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-primary" id="btnSearch">Search</button>
+        <button class="btn-secondary" id="btnClear" type="button">Clear</button>
+        <button class="btn-export" id="btnExport" type="button" disabled>Export CSV</button>
+
+        <span class="status">
+          <span class="status-dot"></span>
+          <span id="statusText">Ready</span>
+        </span>
+      </div>
+
+      <div class="error" id="errBox"></div>
+
+      <div class="success" id="resultBox">
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpi-title">Member</div>
+            <div class="kpi-value" id="outName">—</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-title">Member Code</div>
+            <div class="kpi-value" id="outCode">—</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-title">Total Contributed (LSL)</div>
+            <div class="kpi-value" id="outTotal">—</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>Contribution (LSL)</th>
+            </tr>
+          </thead>
+          <tbody id="tblHistory"></tbody>
+        </table>
+
+        <div class="privacy">
+          <div>🔒</div>
+          <div>
+            <b>Privacy note:</b> This portal does not list members publicly. Only exact matches return results.
+            Please do not share your member code.
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div>© MiLCo – Made-In-Lesotho Retail Cooperative Society Ltd</div>
+      </footer>
+    </div>
+  </main>
+
+  <script src="./assets/js/member.js"></script>
+
+  <script>
+    // Small UX: mirror the dataStatus pill into statusText
+    (function(){
+      const dataStatus = document.getElementById("dataStatus");
+      const statusText = document.getElementById("statusText");
+      const obs = new MutationObserver(() => statusText.textContent = dataStatus.textContent.replace("Loading data…","Loading…"));
+      obs.observe(dataStatus, { childList:true, subtree:true });
+    })();
+  </script>
+</body>
+</html>
