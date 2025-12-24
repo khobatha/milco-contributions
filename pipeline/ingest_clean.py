@@ -4,6 +4,7 @@ Automated ingestion + cleaning for contribution CSV reports.
 
 Supports:
 1) "Column F / Column I" CSV format (member name in column F, amount in column I, period in G2)
+   + Transaction status in column L -> cleaned to txn_status: SUCCESS / FAIL
 2) Bank batch export format with record types SB/SC/SD:
    - Period found as an 8-digit YYYYMMDD somewhere in first rows
    - Member name and amount found in SD rows (name field ~ index 5, amount field ~ index 8)
@@ -34,9 +35,10 @@ DEFAULT_RAW_GLOB = "data/raw/*.csv"
 OUTPUT_CLEAN_CSV = "outputs/clean/all_contributions_clean.csv"
 OUTPUT_AUDIT_CSV = "outputs/logs/ingest_audit.csv"
 
-# In "F/I format", F is 6th col -> index 5, I is 9th col -> index 8
+# In "F/I format", F is 6th col -> index 5, I is 9th col -> index 8, L is 12th col -> index 11
 FI_NAME_COL_INDEX = 5
 FI_AMOUNT_COL_INDEX = 8
+FI_STATUS_COL_INDEX = 11  # ✅ Column L
 
 # Bank export "SD" row expected mapping (based on your sample files)
 BANK_SD_NAME_INDEX = 5
@@ -90,6 +92,36 @@ def clean_amount(value: Any) -> Optional[float]:
         return amt
     except ValueError:
         return None
+
+
+def normalize_txn_status(value: Any) -> str:
+    """
+    Normalize transaction status into either SUCCESS or FAIL.
+
+    Conservative rules:
+    - Explicit "fail" markers => FAIL
+    - Explicit "success" markers => SUCCESS
+    - Empty/unknown => FAIL
+    """
+    if value is None:
+        return "FAIL"
+    s = str(value).strip().lower()
+    if not s:
+        return "FAIL"
+
+    success_markers = [
+        "success", "successful", "completed", "complete", "paid", "processed", "ok", "approved"
+    ]
+    fail_markers = [
+        "fail", "failed", "error", "rejected", "returned", "invalid", "declined", "unsuccess"
+    ]
+
+    if any(m in s for m in fail_markers):
+        return "FAIL"
+    if any(m in s for m in success_markers):
+        return "SUCCESS"
+
+    return "FAIL"
 
 
 def extract_period_from_cells(cells: List[str]) -> Optional[date]:
@@ -153,6 +185,7 @@ class AuditIssue:
     reason: str
     raw_name: str = ""
     raw_amount: str = ""
+    raw_status: str = ""  # ✅ NEW
     row_type: str = ""
     row_num: int = -1
 
@@ -164,6 +197,9 @@ def parse_bank_export(path: str) -> Tuple[pd.DataFrame, List[AuditIssue]]:
     """
     Parse bank export CSV with SB/SC/SD record types.
     We only extract contributions from SD rows.
+
+    Note: bank export files typically don't have "column L txn status" like FI format,
+    so we set txn_status = SUCCESS by default if the amount parses and row is included.
     """
     issues: List[AuditIssue] = []
     records: List[Dict[str, Any]] = []
@@ -216,6 +252,7 @@ def parse_bank_export(path: str) -> Tuple[pd.DataFrame, List[AuditIssue]]:
                 "member_name": name,
                 "member_code": member_code,
                 "amount": amt,
+                "txn_status": "SUCCESS",  # ✅ default for included SD rows
                 "source_file": os.path.basename(path),
                 "source_format": "bank_export_sd"
             })
@@ -229,11 +266,13 @@ def parse_fi_format(path: str) -> Tuple[pd.DataFrame, List[AuditIssue]]:
     Parse a generic CSV where:
     - member name is in column F (index 5)
     - amount is in column I (index 8)
+    - txn status is in column L (index 11) -> normalized to SUCCESS/FAIL
     - period is in cell G2 (row 2, column G -> index 6)
+
     Because CSV exports vary, this parser tries a best-effort approach:
     - loads all rows with pandas (no header)
     - reads period from row 1, col 6 if available
-    - extracts name/amount from each subsequent row where both exist
+    - extracts name/amount/status from each row where both exist
     """
     issues: List[AuditIssue] = []
     records: List[Dict[str, Any]] = []
@@ -266,26 +305,28 @@ def parse_fi_format(path: str) -> Tuple[pd.DataFrame, List[AuditIssue]]:
     if period is None:
         issues.append(AuditIssue(source_file=path, reason="Could not extract period/date (G2/head scan)"))
 
-    # now iterate rows and pick out name/amount
+    # now iterate rows and pick out name/amount/status
     for r in range(len(raw)):
         raw_name = raw.iat[r, FI_NAME_COL_INDEX] if raw.shape[1] > FI_NAME_COL_INDEX else None
         raw_amt = raw.iat[r, FI_AMOUNT_COL_INDEX] if raw.shape[1] > FI_AMOUNT_COL_INDEX else None
+        raw_status = raw.iat[r, FI_STATUS_COL_INDEX] if raw.shape[1] > FI_STATUS_COL_INDEX else None
 
         name = clean_member_name(raw_name) if raw_name is not None else ""
         amt = clean_amount(raw_amt)
+        txn_status = normalize_txn_status(raw_status)
 
         # skip empty rows
-        if not name and (raw_amt is None or str(raw_amt).strip() == ""):
+        if not name and (raw_amt is None or str(raw_amt).strip() == "") and (raw_status is None or str(raw_status).strip() == ""):
             continue
 
         # drop likely header/metadata rows
-        # (if amount can't be parsed, treat as not a contribution line)
         if not name or amt is None:
             issues.append(AuditIssue(
-                source_file=path, row_num=r+1, row_type="FI",
+                source_file=path, row_num=r + 1, row_type="FI",
                 reason="Row skipped (missing name or invalid amount)",
                 raw_name=str(raw_name) if raw_name is not None else "",
-                raw_amount=str(raw_amt) if raw_amt is not None else ""
+                raw_amount=str(raw_amt) if raw_amt is not None else "",
+                raw_status=str(raw_status) if raw_status is not None else "",
             ))
             continue
 
@@ -294,6 +335,7 @@ def parse_fi_format(path: str) -> Tuple[pd.DataFrame, List[AuditIssue]]:
             "member_name": name,
             "member_code": "",  # unknown in FI format unless you add logic
             "amount": amt,
+            "txn_status": txn_status,  # ✅ NEW
             "source_file": os.path.basename(path),
             "source_format": "fi_columns"
         })
@@ -329,9 +371,16 @@ def ingest_all(input_glob: str = DEFAULT_RAW_GLOB) -> None:
     # Final cleanup: drop obvious empties and enforce types
     if not combined.empty:
         combined["member_name"] = combined["member_name"].fillna("").map(clean_member_name)
+
+        # Ensure txn_status exists even if some source did not provide it
+        if "txn_status" not in combined.columns:
+            combined["txn_status"] = "SUCCESS"
+        combined["txn_status"] = combined["txn_status"].fillna("").map(normalize_txn_status)
+
         combined["amount"] = pd.to_numeric(combined["amount"], errors="coerce")
         combined = combined.dropna(subset=["amount"])
         combined = combined[combined["member_name"].str.len() > 0]
+
         # Optional: remove negative amounts unless you expect refunds
         combined = combined[combined["amount"] > 0]
 
@@ -347,7 +396,8 @@ def ingest_all(input_glob: str = DEFAULT_RAW_GLOB) -> None:
         "row_type": i.row_type,
         "reason": i.reason,
         "raw_name": i.raw_name,
-        "raw_amount": i.raw_amount
+        "raw_amount": i.raw_amount,
+        "raw_status": i.raw_status,
     } for i in all_issues])
     audit_df.to_csv(OUTPUT_AUDIT_CSV, index=False)
 

@@ -1,5 +1,10 @@
 {
   "total_records_clean": 3500,
+  "total_records_success": 3500,
+  "total_records_fail": 0,
+  "counts_by_status": {
+    "SUCCESS": 3500
+  },
   "distinct_members": 344,
   "distinct_periods": 42,
   "grand_total": 545500.0,

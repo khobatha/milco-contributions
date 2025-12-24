@@ -1,4 +1,13 @@
 // docs/assets/js/member.js
+//
+// Supports new JSON structure where:
+// member.history[period] = {
+//   success_total: number,
+//   transactions: [{ amount: number, txn_status: "SUCCESS"|"FAIL" }, ...]
+// }
+//
+// UI expectations (from updated index.html):
+// - Table columns: Period | SUCCESS Total (LSL) | Transactions (Amount + Status)
 
 let DATA = null;           // raw JSON: object keyed by member_key
 let INDEX_BY_CODE = {};    // member_code -> member_key
@@ -38,6 +47,23 @@ function setExportEnabled(enabled) {
   document.getElementById("btnExport").disabled = !enabled;
 }
 
+function escapeHtml(s) {
+  return (s || "").toString()
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function badgeHtml(status) {
+  const st = (status || "").toString().toUpperCase();
+  const isOk = st === "SUCCESS";
+  const cls = isOk ? "badge badge-success" : "badge badge-fail";
+  const label = isOk ? "SUCCESS" : "FAIL";
+  return `<span class="${cls}"><span class="badge-dot"></span>${label}</span>`;
+}
+
 async function loadData() {
   const status = document.getElementById("dataStatus");
   status.textContent = "Loading data…";
@@ -61,7 +87,7 @@ async function loadData() {
     if (name) INDEX_BY_NAME[name] = memberKey;
   }
 
-    status.textContent = "Data loaded ✅";
+  status.textContent = "Data loaded ✅";
 }
 
 function findMember(codeInput, nameInput) {
@@ -86,45 +112,83 @@ function findMember(codeInput, nameInput) {
 function renderMember(member) {
   document.getElementById("outName").textContent = member.member_name || "—";
   document.getElementById("outCode").textContent = member.member_code || "—";
+  // Total is SUCCESS-only (per your aggregation rule)
   document.getElementById("outTotal").textContent = fmtNumber(member.total || 0);
 
-  // history table
   const tbody = document.getElementById("tblHistory");
   tbody.innerHTML = "";
 
   const history = member.history || {};
-  const periods = Object.keys(history).sort(); // sorted ascending by ISO date
+  const periods = Object.keys(history).sort(); // ISO date sorting
 
   if (!periods.length) {
-    tbody.innerHTML = `<tr><td colspan="2">No contribution history found.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3">No contribution history found.</td></tr>`;
     return;
   }
 
   for (const p of periods) {
-    const amt = history[p];
+    const periodObj = history[p] || {};
+    const successTotal = Number(periodObj.success_total || 0);
+
+    const txns = Array.isArray(periodObj.transactions) ? periodObj.transactions : [];
+    let txHtml = "";
+
+    if (!txns.length) {
+      txHtml = `<span class="pill">No transactions</span>`;
+    } else {
+      // Render list within one cell
+      txHtml = txns.map(t => {
+        const amt = fmtNumber(Number(t.amount || 0));
+        const st = (t.txn_status || "").toString().toUpperCase();
+        return `<div style="display:flex;gap:10px;align-items:center;margin:4px 0;">
+                  <span style="min-width:90px;">LSL ${amt}</span>
+                  ${badgeHtml(st)}
+                </div>`;
+      }).join("");
+    }
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p}</td>
-      <td>${fmtNumber(amt)}</td>
+      <td>${escapeHtml(p)}</td>
+      <td>${fmtNumber(successTotal)}</td>
+      <td>${txHtml}</td>
     `;
     tbody.appendChild(tr);
   }
 }
 
 function exportCSV(member) {
+  // Export includes both SUCCESS and FAIL lines,
+  // with an extra column to reflect txn_status,
+  // plus a SUCCESS_total column per period for convenience.
+
   const history = member.history || {};
   const periods = Object.keys(history).sort();
 
   const lines = [];
-  lines.push("Period,Amount");
+  lines.push("Period,Amount,TxnStatus,PeriodSuccessTotal");
+
   for (const p of periods) {
-    lines.push(`${p},${history[p]}`);
+    const periodObj = history[p] || {};
+    const successTotal = Number(periodObj.success_total || 0);
+    const txns = Array.isArray(periodObj.transactions) ? periodObj.transactions : [];
+
+    if (!txns.length) {
+      // Still emit a row so the period appears in exports
+      lines.push(`${p},,,"${successTotal}"`);
+      continue;
+    }
+
+    for (const t of txns) {
+      const amt = (t.amount === null || t.amount === undefined) ? "" : Number(t.amount);
+      const st = (t.txn_status || "").toString().toUpperCase();
+      lines.push(`${p},${amt},${st},${successTotal}`);
+    }
   }
 
   const csv = lines.join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
 
-  // Filename
   const safeName = (member.member_name || "member").replace(/[^a-z0-9]+/gi, "_");
   const filename = `MILCO_Contribution_Statement_${safeName}.csv`;
 
@@ -189,6 +253,14 @@ async function main() {
   document.getElementById("btnExport").addEventListener("click", () => {
     if (!currentMember) return;
     exportCSV(currentMember);
+  });
+
+  // Optional: allow Enter key to trigger search
+  document.getElementById("inpCode").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("btnSearch").click();
+  });
+  document.getElementById("inpName").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") document.getElementById("btnSearch").click();
   });
 }
 
