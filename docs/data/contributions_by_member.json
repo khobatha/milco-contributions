@@ -1,0 +1,232 @@
+{
+  "SAMPLE_M001": {
+    "member_key": "SAMPLE_M001",
+    "member_code": "M001",
+    "member_name": "Sample Member 1",
+    "total": 1000,
+    "history": {
+      "2025-01-01": 100,
+      "2025-01-31": 150,
+      "2025-03-02": 100,
+      "2025-04-01": 300,
+      "2025-05-01": 250,
+      "2025-05-31": 100
+    }
+  },
+  "SAMPLE_M002": {
+    "member_key": "SAMPLE_M002",
+    "member_code": "M002",
+    "member_name": "Sample Member 2",
+    "total": 1400,
+    "history": {
+      "2025-01-01": 300,
+      "2025-01-31": 300,
+      "2025-03-02": 300,
+      "2025-04-01": 250,
+      "2025-05-01": 100,
+      "2025-05-31": 150
+    }
+  },
+  "SAMPLE_M003": {
+    "member_key": "SAMPLE_M003",
+    "member_code": "M003",
+    "member_name": "Sample Member 3",
+    "total": 950,
+    "history": {
+      "2025-01-01": 200,
+      "2025-01-31": 150,
+      "2025-04-01": 100,
+      "2025-05-01": 200,
+      "2025-05-31": 300
+    }
+  },
+  "SAMPLE_M004": {
+    "member_key": "SAMPLE_M004",
+    "member_code": "M004",
+    "member_name": "Sample Member 4",
+    "total": 1150,
+    "history": {
+      "2025-01-01": 100,
+      "2025-01-31": 300,
+      "2025-03-02": 250,
+      "2025-04-01": 200,
+      "2025-05-01": 300
+    }
+  },
+  "SAMPLE_M005": {
+    "member_key": "SAMPLE_M005",
+    "member_code": "M005",
+    "member_name": "Sample Member 5",
+    "total": 450,
+    "history": {
+      "2025-01-01": 150,
+      "2025-01-31": 100,
+      "2025-03-02": 200
+    }
+  },
+  "SAMPLE_M006": {
+    "member_key": "SAMPLE_M006",
+    "member_code": "M006",
+    "member_name": "Sample Member 6",
+    "total": 1100,
+    "history": {
+      "2025-01-01": 250,
+      "2025-01-31": 200,
+      "2025-03-02": 200,
+      "2025-04-01": 200,
+      "2025-05-01": 100,
+      "2025-05-31": 150
+    }
+  },
+  "SAMPLE_M007": {
+    "member_key": "SAMPLE_M007",
+    "member_code": "M007",
+    "member_name": "Sample Member 7",
+    "total": 1100,
+    "history": {
+      "2025-01-01": 150,
+      "2025-01-31": 250,
+      "2025-03-02": 300,
+      "2025-04-01": 200,
+      "2025-05-01": 100,
+      "2025-05-31": 100
+    }
+  },
+  "SAMPLE_M008": {
+    "member_key": "SAMPLE_M008",
+    "member_code": "M008",
+    "member_name": "Sample Member 8",
+    "total": 1100,
+    "history": {
+      "2025-01-01": 250,
+      "2025-01-31": 150,
+      "2025-04-01": 200,
+      "2025-05-01": 250,
+      "2025-05-31": 250
+    }
+  },
+  "SAMPLE_M009": {
+    "member_key": "SAMPLE_M009",
+    "member_code": "M009",
+    "member_name": "Sample Member 9",
+    "total": 1200,
+    "history": {
+      "2025-01-01": 150,
+      "2025-01-31": 300,
+      "2025-03-02": 300,
+      "2025-04-01": 300,
+      "2025-05-01": 150
+    }
+  },
+  "SAMPLE_M010": {
+    "member_key": "SAMPLE_M010",
+    "member_code": "M010",
+    "member_name": "Sample Member 10",
+    "total": 1000,
+    "history": {
+      "2025-01-01": 250,
+      "2025-01-31": 100,
+      "2025-04-01": 150,
+      "2025-05-01": 250,
+      "2025-05-31": 250
+    }
+  },
+  "SAMPLE_M011": {
+    "member_key": "SAMPLE_M011",
+    "member_code": "M011",
+    "member_name": "Sample Member 11",
+    "total": 1150,
+    "history": {
+      "2025-01-01": 250,
+      "2025-01-31": 300,
+      "2025-04-01": 100,
+      "2025-05-01": 300,
+      "2025-05-31": 200
+    }
+  },
+  "SAMPLE_M012": {
+    "member_key": "SAMPLE_M012",
+    "member_code": "M012",
+    "member_name": "Sample Member 12",
+    "total": 950,
+    "history": {
+      "2025-01-01": 250,
+      "2025-01-31": 100,
+      "2025-05-01": 300,
+      "2025-05-31": 300
+    }
+  },
+  "SAMPLE_M013": {
+    "member_key": "SAMPLE_M013",
+    "member_code": "M013",
+    "member_name": "Sample Member 13",
+    "total": 900,
+    "history": {
+      "2025-03-02": 300,
+      "2025-04-01": 150,
+      "2025-05-01": 150,
+      "2025-05-31": 300
+    }
+  },
+  "SAMPLE_M014": {
+    "member_key": "SAMPLE_M014",
+    "member_code": "M014",
+    "member_name": "Sample Member 14",
+    "total": 800,
+    "history": {
+      "2025-01-31": 250,
+      "2025-03-02": 200,
+      "2025-05-01": 200,
+      "2025-05-31": 150
+    }
+  },
+  "SAMPLE_M015": {
+    "member_key": "SAMPLE_M015",
+    "member_code": "M015",
+    "member_name": "Sample Member 15",
+    "total": 1000,
+    "history": {
+      "2025-03-02": 250,
+      "2025-04-01": 300,
+      "2025-05-01": 150,
+      "2025-05-31": 300
+    }
+  },
+  "SAMPLE_M016": {
+    "member_key": "SAMPLE_M016",
+    "member_code": "M016",
+    "member_name": "Sample Member 16",
+    "total": 850,
+    "history": {
+      "2025-01-01": 300,
+      "2025-03-02": 150,
+      "2025-05-01": 150,
+      "2025-05-31": 250
+    }
+  },
+  "SAMPLE_M017": {
+    "member_key": "SAMPLE_M017",
+    "member_code": "M017",
+    "member_name": "Sample Member 17",
+    "total": 900,
+    "history": {
+      "2025-01-31": 250,
+      "2025-04-01": 150,
+      "2025-05-01": 200,
+      "2025-05-31": 300
+    }
+  },
+  "SAMPLE_M018": {
+    "member_key": "SAMPLE_M018",
+    "member_code": "M018",
+    "member_name": "Sample Member 18",
+    "total": 750,
+    "history": {
+      "2025-01-01": 150,
+      "2025-01-31": 100,
+      "2025-03-02": 100,
+      "2025-05-01": 150,
+      "2025-05-31": 250
+    }
+  }
+}

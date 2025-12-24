@@ -1,0 +1,90 @@
+{
+  "total_records_clean": 86,
+  "distinct_members": 18,
+  "distinct_periods": 6,
+  "grand_total": 17750,
+  "totals_by_period": [
+    {
+      "period": "2025-01-01",
+      "total": 2850,
+      "growth_pct": null
+    },
+    {
+      "period": "2025-01-31",
+      "total": 3000,
+      "growth_pct": 5.263157894736842
+    },
+    {
+      "period": "2025-03-02",
+      "total": 2650,
+      "growth_pct": -11.666666666666666
+    },
+    {
+      "period": "2025-04-01",
+      "total": 2600,
+      "growth_pct": -1.8867924528301887
+    },
+    {
+      "period": "2025-05-01",
+      "total": 3300,
+      "growth_pct": 26.923076923076923
+    },
+    {
+      "period": "2025-05-31",
+      "total": 3350,
+      "growth_pct": 1.5151515151515151
+    }
+  ],
+  "top_contributors": [
+    {
+      "member_key": "SAMPLE_M002",
+      "member_name": "Sample Member 2",
+      "total_to_date": 1400
+    },
+    {
+      "member_key": "SAMPLE_M009",
+      "member_name": "Sample Member 9",
+      "total_to_date": 1200
+    },
+    {
+      "member_key": "SAMPLE_M004",
+      "member_name": "Sample Member 4",
+      "total_to_date": 1150
+    },
+    {
+      "member_key": "SAMPLE_M011",
+      "member_name": "Sample Member 11",
+      "total_to_date": 1150
+    },
+    {
+      "member_key": "SAMPLE_M006",
+      "member_name": "Sample Member 6",
+      "total_to_date": 1100
+    },
+    {
+      "member_key": "SAMPLE_M007",
+      "member_name": "Sample Member 7",
+      "total_to_date": 1100
+    },
+    {
+      "member_key": "SAMPLE_M008",
+      "member_name": "Sample Member 8",
+      "total_to_date": 1100
+    },
+    {
+      "member_key": "SAMPLE_M001",
+      "member_name": "Sample Member 1",
+      "total_to_date": 1000
+    },
+    {
+      "member_key": "SAMPLE_M010",
+      "member_name": "Sample Member 10",
+      "total_to_date": 1000
+    },
+    {
+      "member_key": "SAMPLE_M015",
+      "member_name": "Sample Member 15",
+      "total_to_date": 1000
+    }
+  ]
+}
