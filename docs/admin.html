@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MILCO Admin Dashboard – Contributions</title>
+
+  <!-- Minimal styling (no frameworks needed) -->
+  <style>
+    :root { --bg:#0b1020; --card:#121a33; --text:#e8ecff; --muted:#9aa7c7; --line:#243055; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text); }
+    header { padding:20px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    header h1 { margin:0; font-size:18px; letter-spacing:0.2px; }
+    header .small { color:var(--muted); font-size:12px; }
+    main { padding:20px; max-width:1100px; margin:0 auto; }
+    .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
+    .kpi-title { color:var(--muted); font-size:12px; margin-bottom:6px; }
+    .kpi-value { font-size:20px; font-weight:700; }
+    .row { display:grid; grid-template-columns: 1.4fr 1fr; gap:12px; margin-top:12px; }
+    canvas { width:100% !important; height:340px !important; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { padding:10px; border-bottom:1px solid var(--line); text-align:left; font-size:13px; }
+    th { color:var(--muted); font-weight:600; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:12px; }
+    .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    input { padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:#0f1630; color:var(--text); }
+    button { padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:#18244b; color:var(--text); cursor:pointer; }
+    button:hover { filter:brightness(1.1); }
+    .error { margin-top:12px; color:#ffb4b4; }
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>MILCO Admin Dashboard</h1>
+      <div class="small">Contributions Analytics (static – powered by summary_stats.json)</div>
+    </div>
+    <div class="controls">
+      <span class="pill" id="lastUpdated">Loading…</span>
+      <button id="btnReload">Reload data</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- KPI cards -->
+    <div class="grid">
+      <div class="card">
+        <div class="kpi-title">Grand Total (LSL)</div>
+        <div class="kpi-value" id="kpiGrandTotal">—</div>
+      </div>
+      <div class="card">
+        <div class="kpi-title">Distinct Members</div>
+        <div class="kpi-value" id="kpiMembers">—</div>
+      </div>
+      <div class="card">
+        <div class="kpi-title">Periods Covered</div>
+        <div class="kpi-value" id="kpiPeriods">—</div>
+      </div>
+      <div class="card">
+        <div class="kpi-title">Avg Contribution / Member (LSL)</div>
+        <div class="kpi-value" id="kpiAvgPerMember">—</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+      <div class="card">
+        <div class="kpi-title">Total Contributions Over Time</div>
+        <canvas id="chartTotals"></canvas>
+      </div>
+      <div class="card">
+        <div class="kpi-title">Top Contributors (Top 10)</div>
+        <canvas id="chartTop"></canvas>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card" style="margin-top:12px;">
+      <div class="kpi-title">Period Totals & Growth</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Total (LSL)</th>
+            <th>Growth %</th>
+          </tr>
+        </thead>
+        <tbody id="tblPeriods">
+          <tr><td colspan="3">Loading…</td></tr>
+        </tbody>
+      </table>
+      <div class="error" id="errBox" style="display:none;"></div>
+    </div>
+  </main>
+
+  <script src="./assets/js/admin.js"></script>
+</body>
+</html>
