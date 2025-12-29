@@ -1,19 +1,229 @@
 {
-  "total_records_clean": 7705,
-  "total_records_success": 5151,
-  "total_records_fail": 2554,
+  "total_records_clean": 9045,
+  "total_records_success": 6085,
+  "total_records_fail": 2960,
   "counts_by_status": {
-    "SUCCESS": 5151,
-    "FAIL": 2554
+    "SUCCESS": 6085,
+    "FAIL": 2960
   },
-  "distinct_members": 390,
-  "distinct_periods": 102,
-  "grand_total": 855643.0,
+  "distinct_members": 474,
+  "distinct_periods": 151,
+  "grand_total": 1019223.0,
   "totals_by_period": [
+    {
+      "period": "2022-02-28",
+      "total": 850.0,
+      "growth_pct": null
+    },
+    {
+      "period": "2022-03-01",
+      "total": 600.0,
+      "growth_pct": -29.411764705882348
+    },
+    {
+      "period": "2022-03-05",
+      "total": 100.0,
+      "growth_pct": -83.33333333333334
+    },
+    {
+      "period": "2022-03-21",
+      "total": 50.0,
+      "growth_pct": -50.0
+    },
+    {
+      "period": "2022-03-31",
+      "total": 1250.0,
+      "growth_pct": 2400.0
+    },
+    {
+      "period": "2022-04-05",
+      "total": 1000.0,
+      "growth_pct": -19.999999999999996
+    },
+    {
+      "period": "2022-04-20",
+      "total": 850.0,
+      "growth_pct": -15.000000000000002
+    },
+    {
+      "period": "2022-04-26",
+      "total": 950.0,
+      "growth_pct": 11.764705882352944
+    },
+    {
+      "period": "2022-04-28",
+      "total": 2400.0,
+      "growth_pct": 152.6315789473684
+    },
+    {
+      "period": "2022-05-02",
+      "total": 2900.0,
+      "growth_pct": 20.833333333333325
+    },
+    {
+      "period": "2022-05-21",
+      "total": 1250.0,
+      "growth_pct": -56.896551724137936
+    },
+    {
+      "period": "2022-05-26",
+      "total": 1545.0,
+      "growth_pct": 23.599999999999998
+    },
+    {
+      "period": "2022-05-28",
+      "total": 2610.0,
+      "growth_pct": 68.93203883495144
+    },
+    {
+      "period": "2022-06-03",
+      "total": 3510.0,
+      "growth_pct": 34.48275862068966
+    },
+    {
+      "period": "2022-06-06",
+      "total": 1420.0,
+      "growth_pct": -59.54415954415955
+    },
+    {
+      "period": "2022-06-21",
+      "total": 1480.0,
+      "growth_pct": 4.225352112676051
+    },
+    {
+      "period": "2022-06-28",
+      "total": 5360.0,
+      "growth_pct": 262.16216216216213
+    },
+    {
+      "period": "2022-06-29",
+      "total": 3120.0,
+      "growth_pct": -41.7910447761194
+    },
+    {
+      "period": "2022-07-01",
+      "total": 10850.0,
+      "growth_pct": 247.75641025641028
+    },
+    {
+      "period": "2022-07-21",
+      "total": 1380.0,
+      "growth_pct": -87.28110599078342
+    },
+    {
+      "period": "2022-07-26",
+      "total": 4365.0,
+      "growth_pct": 216.30434782608697
+    },
+    {
+      "period": "2022-07-28",
+      "total": 2900.0,
+      "growth_pct": -33.562428407789234
+    },
+    {
+      "period": "2022-08-02",
+      "total": 4410.0,
+      "growth_pct": 52.06896551724138
+    },
+    {
+      "period": "2022-08-20",
+      "total": 1495.0,
+      "growth_pct": -66.09977324263039
+    },
+    {
+      "period": "2022-08-26",
+      "total": 5405.0,
+      "growth_pct": 261.53846153846155
+    },
+    {
+      "period": "2022-08-29",
+      "total": 3915.0,
+      "growth_pct": -27.567067530064758
+    },
+    {
+      "period": "2022-09-01",
+      "total": 10315.0,
+      "growth_pct": 163.47381864623242
+    },
+    {
+      "period": "2022-09-21",
+      "total": 1955.0,
+      "growth_pct": -81.047018904508
+    },
+    {
+      "period": "2022-09-26",
+      "total": 6515.0,
+      "growth_pct": 233.24808184143225
+    },
+    {
+      "period": "2022-09-28",
+      "total": 4260.0,
+      "growth_pct": -34.61243284727552
+    },
+    {
+      "period": "2022-10-01",
+      "total": 11520.0,
+      "growth_pct": 170.4225352112676
+    },
+    {
+      "period": "2022-10-21",
+      "total": 2005.0,
+      "growth_pct": -82.59548611111111
+    },
+    {
+      "period": "2022-10-27",
+      "total": 6975.0,
+      "growth_pct": 247.88029925187033
+    },
+    {
+      "period": "2022-10-28",
+      "total": 3700.0,
+      "growth_pct": -46.95340501792115
+    },
+    {
+      "period": "2022-11-01",
+      "total": 11925.0,
+      "growth_pct": 222.2972972972973
+    },
+    {
+      "period": "2022-11-21",
+      "total": 2185.0,
+      "growth_pct": -81.67714884696016
+    },
+    {
+      "period": "2022-11-26",
+      "total": 6125.0,
+      "growth_pct": 180.3203661327231
+    },
+    {
+      "period": "2022-11-28",
+      "total": 3520.0,
+      "growth_pct": -42.53061224489796
+    },
+    {
+      "period": "2022-12-01",
+      "total": 11915.0,
+      "growth_pct": 238.49431818181816
+    },
+    {
+      "period": "2022-12-21",
+      "total": 2935.0,
+      "growth_pct": -75.36718422156945
+    },
+    {
+      "period": "2022-12-27",
+      "total": 8115.0,
+      "growth_pct": 176.49063032367974
+    },
+    {
+      "period": "2022-12-28",
+      "total": 3650.0,
+      "growth_pct": -55.02156500308071
+    },
     {
       "period": "2023-01-02",
       "total": 15150.0,
-      "growth_pct": null
+      "growth_pct": 315.06849315068496
     },
     {
       "period": "2023-01-21",
@@ -514,23 +724,43 @@
   "top_contributors": [
     {
       "member_key": "M091",
-      "total_to_date": 52390.0,
+      "total_to_date": 64695.0,
       "member_name": "Custom It"
     },
     {
       "member_key": "M071",
-      "total_to_date": 20300.0,
+      "total_to_date": 25375.0,
       "member_name": "Thato Molise"
     },
     {
       "member_key": "M126",
-      "total_to_date": 20300.0,
+      "total_to_date": 22790.0,
       "member_name": "Mapoulo Morie"
     },
     {
       "member_key": "M145",
-      "total_to_date": 13390.0,
+      "total_to_date": 16480.0,
       "member_name": "Karabo Mokobocho"
+    },
+    {
+      "member_key": "M101",
+      "total_to_date": 15965.0,
+      "member_name": "Molefi Mokhethi"
+    },
+    {
+      "member_key": "M028",
+      "total_to_date": 15435.0,
+      "member_name": "Sekhulumi Ntsoaole"
+    },
+    {
+      "member_key": "M053",
+      "total_to_date": 13285.0,
+      "member_name": "Tebelo Moji"
+    },
+    {
+      "member_key": "M025",
+      "total_to_date": 13095.0,
+      "member_name": "Maleshoane Qofa"
     },
     {
       "member_key": "M270",
@@ -538,24 +768,39 @@
       "member_name": "Mathabang Rachel Fanyane"
     },
     {
-      "member_key": "M101",
-      "total_to_date": 12875.0,
-      "member_name": "Molefi Mokhethi"
-    },
-    {
-      "member_key": "M028",
-      "total_to_date": 10300.0,
-      "member_name": "Sekhulumi Ntsoaole"
-    },
-    {
-      "member_key": "M025",
-      "total_to_date": 10220.0,
-      "member_name": "Maleshoane Qofa"
+      "member_key": "M060",
+      "total_to_date": 11340.0,
+      "member_name": "Tlohang Palama"
     },
     {
       "member_key": "M180",
-      "total_to_date": 9785.0,
+      "total_to_date": 11330.0,
       "member_name": "Bothile Shebe"
+    },
+    {
+      "member_key": "M162",
+      "total_to_date": 10870.0,
+      "member_name": "Thabang Lefulereli"
+    },
+    {
+      "member_key": "M068",
+      "total_to_date": 10695.0,
+      "member_name": "Palesa Mokorosi"
+    },
+    {
+      "member_key": "M010",
+      "total_to_date": 10395.0,
+      "member_name": "Pulane Nkhabutlane"
+    },
+    {
+      "member_key": "M061",
+      "total_to_date": 9750.0,
+      "member_name": "Rethabile Thamae"
+    },
+    {
+      "member_key": "M179",
+      "total_to_date": 8820.0,
+      "member_name": "Nthatisi Molefi"
     },
     {
       "member_key": "M300",
@@ -563,54 +808,19 @@
       "member_name": "Leonia T Ramataboe"
     },
     {
+      "member_key": "M099",
+      "total_to_date": 8745.0,
+      "member_name": "Soaile Mochaba"
+    },
+    {
       "member_key": "M274",
       "total_to_date": 8505.0,
       "member_name": "Mpali Albert Mochesane"
     },
     {
-      "member_key": "M010",
-      "total_to_date": 8505.0,
-      "member_name": "Pulane Nkhabutlane"
-    },
-    {
-      "member_key": "M060",
-      "total_to_date": 8505.0,
-      "member_name": "Tlohang Palama"
-    },
-    {
-      "member_key": "M312",
-      "total_to_date": 8190.0,
-      "member_name": "Makarabelo J Mosito"
-    },
-    {
       "member_key": "M286",
       "total_to_date": 8190.0,
       "member_name": "Makananelo A Kumalo"
-    },
-    {
-      "member_key": "M061",
-      "total_to_date": 7875.0,
-      "member_name": "Rethabile Thamae"
-    },
-    {
-      "member_key": "M162",
-      "total_to_date": 7710.0,
-      "member_name": "Thabang Lefulereli"
-    },
-    {
-      "member_key": "M053",
-      "total_to_date": 7650.0,
-      "member_name": "Tebelo Moji"
-    },
-    {
-      "member_key": "M068",
-      "total_to_date": 7560.0,
-      "member_name": "Palesa Mokorosi"
-    },
-    {
-      "member_key": "M179",
-      "total_to_date": 7560.0,
-      "member_name": "Nthatisi Molefi"
     }
   ]
 }

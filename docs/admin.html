@@ -3,53 +3,273 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MILCO Admin Dashboard – Contributions</title>
+  <title>MiLCo Admin Dashboard – Contributions</title>
 
-  <!-- Minimal styling (no frameworks needed) -->
   <style>
-    :root { --bg:#0b1020; --card:#121a33; --text:#e8ecff; --muted:#9aa7c7; --line:#243055; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text); }
-    header { padding:20px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    header h1 { margin:0; font-size:18px; letter-spacing:0.2px; }
-    header .small { color:var(--muted); font-size:12px; }
-    main { padding:20px; max-width:1100px; margin:0 auto; }
-    .grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; }
-    .kpi-title { color:var(--muted); font-size:12px; margin-bottom:6px; }
-    .kpi-value { font-size:20px; font-weight:700; }
-    .row { display:grid; grid-template-columns: 1.4fr 1fr; gap:12px; margin-top:12px; }
-    canvas { width:100% !important; height:340px !important; }
-    table { width:100%; border-collapse: collapse; }
-    th, td { padding:10px; border-bottom:1px solid var(--line); text-align:left; font-size:13px; }
-    th { color:var(--muted); font-weight:600; }
-    .pill { display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); font-size:12px; }
-    .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    input { padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:#0f1630; color:var(--text); }
-    button { padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:#18244b; color:var(--text); cursor:pointer; }
-    button:hover { filter:brightness(1.1); }
-    .error { margin-top:12px; color:#ffb4b4; }
+    /* MiLCo brand palette (same as client portal) */
+    :root{
+      --milco-red:#d60000;
+      --milco-red-dark:#b30000;
+      --milco-charcoal:#3b3b3b;
+      --milco-green:#2e8b57;
+
+      --bg:#f7f7fb;
+      --card:#ffffff;
+      --text:#1f2430;
+      --muted:#5a6476;
+      --line:#e6e8ef;
+
+      --shadow: 0 10px 30px rgba(18, 24, 40, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .topbar{
+      background: linear-gradient(90deg, var(--milco-red) 0%, var(--milco-red-dark) 55%, var(--milco-charcoal) 100%);
+      height: 6px;
+      width: 100%;
+    }
+
+    header{
+      background:#fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 320px;
+    }
+
+    .brand img{
+      width:46px;
+      height:46px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background:#fff;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size: 16px;
+      line-height: 1.1;
+      color: var(--milco-charcoal);
+      letter-spacing: 0.2px;
+    }
+
+    .brand .sub{
+      margin-top:4px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .controls{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background:#fff;
+      color: var(--muted);
+      font-size: 12px;
+      white-space:nowrap;
+    }
+
+    .pill-warn{
+      border-color: rgba(214,0,0,0.25);
+      background: rgba(214,0,0,0.06);
+      color: #8a0b0b;
+    }
+
+    button{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background:#fff;
+      color: var(--milco-charcoal);
+      font-weight: 700;
+      font-size: 13px;
+      cursor:pointer;
+      transition: filter .15s, transform .06s;
+    }
+    button:hover{ filter: brightness(0.98); }
+    button:active{ transform: translateY(1px); }
+
+    main{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 20px 28px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    .kpi-title{
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .kpi-value{
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--milco-charcoal);
+    }
+
+    .kpi-split{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: #fff;
+    }
+    .dot{ width:8px; height:8px; border-radius:50%; }
+    .dot-success{ background: var(--milco-green); box-shadow: 0 0 0 3px rgba(46,139,87,.15); }
+    .dot-fail{ background: var(--milco-red); box-shadow: 0 0 0 3px rgba(214,0,0,.12); }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .card h2{
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--milco-charcoal);
+    }
+
+    canvas{ width:100% !important; height:340px !important; }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      overflow:hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+    }
+
+    thead th{
+      background: #fbfbfe;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 12.5px;
+      text-align:left;
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    tbody td{
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+    tbody tr:last-child td{ border-bottom:none; }
+
+    .error{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(214,0,0,0.25);
+      background: rgba(214,0,0,0.06);
+      color: #8a0b0b;
+      display:none;
+      font-size: 13px;
+    }
+
+    footer{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 6px 2px 0;
+    }
+
     @media (max-width: 980px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .row { grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+      .row{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .grid{ grid-template-columns: 1fr; }
     }
   </style>
 
-  <!-- Chart.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
-<div class="pill" style="border-color:#ff9800;color:#ff9800;">
-  SAMPLE DATA – For demonstration only
-</div>
 
 <body>
+  <div class="topbar"></div>
+
   <header>
-    <div>
-      <h1>MILCO Admin Dashboard</h1>
-      <div class="small">Contributions Analytics (static – powered by summary_stats.json)</div>
-    </div>
-    <div class="controls">
-      <span class="pill" id="lastUpdated">Loading…</span>
-      <button id="btnReload">Reload data</button>
+    <div class="header-inner">
+      <div class="brand">
+        <img src="./assets/img/milco.jpeg" alt="MiLCo Logo" />
+        <div>
+          <h1>MiLCo Admin Dashboard</h1>
+          <div class="sub">Contributions Analytics (static – powered by summary_stats.json)</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <!--span class="pill pill-warn">SAMPLE DATA – For demonstration only</span-->
+        <span class="pill" id="lastUpdated">Loading…</span>
+        <button id="btnReload" type="button">Reload data</button>
+      </div>
     </div>
   </header>
 
@@ -57,51 +277,73 @@
     <!-- KPI cards -->
     <div class="grid">
       <div class="card">
-        <div class="kpi-title">Grand Total (LSL)</div>
-        <div class="kpi-value" id="kpiGrandTotal">—</div>
+        <div class="kpi-title">
+          <span>Grand Total (SUCCESS only) – LSL</span>
+          <span class="chip"><span class="dot dot-success"></span>SUCCESS</span>
+        </div>
+        <div class="kpi-value" id="kpiGrandTotalSuccess">—</div>
       </div>
+
+      <div class="card">
+        <div class="kpi-title">
+          <span>Grand Total (FAILED txns) – LSL</span>
+          <span class="chip"><span class="dot dot-fail"></span>FAIL</span>
+        </div>
+        <div class="kpi-value" id="kpiGrandTotalFail">—</div>
+      </div>
+
       <div class="card">
         <div class="kpi-title">Distinct Members</div>
         <div class="kpi-value" id="kpiMembers">—</div>
+        <div class="kpi-split">
+          <span class="chip">Periods: <b id="kpiPeriods" style="color:var(--milco-charcoal)">—</b></span>
+          <span class="chip">Records (clean): <b id="kpiRecords" style="color:var(--milco-charcoal)">—</b></span>
+        </div>
       </div>
+
       <div class="card">
-        <div class="kpi-title">Periods Covered</div>
-        <div class="kpi-value" id="kpiPeriods">—</div>
-      </div>
-      <div class="card">
-        <div class="kpi-title">Avg Contribution / Member (LSL)</div>
-        <div class="kpi-value" id="kpiAvgPerMember">—</div>
+        <div class="kpi-title">Avg SUCCESS / Member (LSL)</div>
+        <div class="kpi-value" id="kpiAvgPerMemberSuccess">—</div>
+        <div class="kpi-split">
+          <span class="chip">Avg FAIL / Member (LSL): <b id="kpiAvgPerMemberFail" style="color:var(--milco-charcoal)">—</b></span>
+        </div>
       </div>
     </div>
 
     <!-- Charts -->
     <div class="row">
       <div class="card">
-        <div class="kpi-title">Total Contributions Over Time</div>
+        <h2>Totals Over Time (SUCCESS vs FAIL)</h2>
         <canvas id="chartTotals"></canvas>
+        <footer>SUCCESS totals drive member totals; FAIL totals help track payment issues.</footer>
       </div>
+
       <div class="card">
-        <div class="kpi-title">Top Contributors (Top 10)</div>
+        <h2>Top Contributors (Top 10 – SUCCESS only)</h2>
         <canvas id="chartTop"></canvas>
+        <footer>Sorted by successful contributions only.</footer>
       </div>
     </div>
 
     <!-- Table -->
     <div class="card" style="margin-top:12px;">
-      <div class="kpi-title">Period Totals & Growth</div>
+      <h2>Period Totals & Growth (SUCCESS vs FAIL)</h2>
       <table>
         <thead>
           <tr>
             <th>Period</th>
-            <th>Total (LSL)</th>
-            <th>Growth %</th>
+            <th>SUCCESS Total (LSL)</th>
+            <th>FAIL Total (LSL)</th>
+            <th>SUCCESS Growth %</th>
+            <th>FAIL Growth %</th>
           </tr>
         </thead>
         <tbody id="tblPeriods">
-          <tr><td colspan="3">Loading…</td></tr>
+          <tr><td colspan="5">Loading…</td></tr>
         </tbody>
       </table>
-      <div class="error" id="errBox" style="display:none;"></div>
+
+      <div class="error" id="errBox"></div>
     </div>
   </main>
 
